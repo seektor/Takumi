@@ -1,0 +1,2 @@
+git+https://github.com/Rapptz/discord.py@master
+async-timeout===3.0.1
