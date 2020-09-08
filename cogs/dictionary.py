@@ -19,6 +19,9 @@ class DictionaryCogs(commands.Cog):
     async def t_eng(self, ctx, *args):
         """Translates the following word to english"""
 
+        if not self.OXFORD_ID or not self.OXFORD_KEY:
+            await ctx.send('Please provide valid api keys')
+
         language_code = 'en-gb'
         word = args[0]
 
@@ -32,13 +35,27 @@ class DictionaryCogs(commands.Cog):
         r_json = r.json()
 
         if r.status_code != 200:
-            embed = discord.Embed(colour=discord.colour.Color.red())
-            error_msg = r_json['error'] or 'There has been a problem with the translation'
-            embed.add_field(name='Error', value=error_msg)
+            embed = self.createErrorEmbed('No definition found')
+            await ctx.send(embed=embed)
+            return
+
+        try:
+            definitions = self.extractDefinitions(r_json)
+        except:
+            embed = self.createErrorEmbed("No definition found")
             await ctx.send(embed=embed)
             return
 
         embed = discord.Embed(colour=discord.colour.Color.blue())
+        embed.add_field(name=f'{word.title()} definition', value=definitions)
+        await ctx.send(embed=embed)
+
+    def createErrorEmbed(self, msg):
+        embed = discord.Embed(colour=discord.colour.Color.red())
+        embed.add_field(name='Error', value=msg)
+        return embed
+
+    def extractDefinitions(self, r_json):
         results_arr = r_json["results"]
         lexical_entries_arr = flat_map(
             lambda e: e["lexicalEntries"], results_arr)
@@ -46,6 +63,4 @@ class DictionaryCogs(commands.Cog):
         senses_arr = flat_map(lambda e: e["senses"], entries_arr)
         definitions_arr = flat_map(lambda e: e["definitions"], senses_arr)
         definitions = '\n'.join(definitions_arr)
-
-        embed.add_field(name=f'{word.title()} definition', value=definitions)
-        await ctx.send(embed=embed)
+        return definitions
