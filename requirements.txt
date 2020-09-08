@@ -1,4 +1,4 @@
 git+https://github.com/Rapptz/discord.py@master
 async-timeout==3.0.1
 python-dotenv==0.14.0
-requests=2.24.0
+requests==2.24.0
