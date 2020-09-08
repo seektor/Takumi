@@ -5,7 +5,7 @@ import discord
 import requests
 from discord.ext import commands
 
-from ..utils.utils import flat_map
+from utils.utils import flat_map
 
 
 class DictionaryCogs(commands.Cog):

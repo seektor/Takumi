@@ -3,6 +3,8 @@ import random
 import discord
 from discord.ext import commands
 
+from utils.constants import EIGHT_BALL_ANSWERS
+
 
 class SelectionCogs(commands.Cog):
     def __init__(self, bot):
@@ -13,6 +15,12 @@ class SelectionCogs(commands.Cog):
         """Yes or No"""
         choices = ['Yes', 'No']
         await ctx.send(random.choice(choices))
+
+    @commands.command()
+    async def eight_ball(self, ctx):
+        """Selects one from the 8ball answers"""
+        answer = random.choice(EIGHT_BALL_ANSWERS)
+        await ctx.send(answer)
 
     @commands.command()
     async def rate(self, ctx):
