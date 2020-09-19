@@ -17,7 +17,7 @@ class DictionaryCogs(commands.Cog):
     # via 'https://developer.oxforddictionaries.com/' Remember about proper app_key and app_id
     @commands.command()
     async def t_eng(self, ctx, *args):
-        """Translates the following word to english"""
+        """Provides the description of the provided word in english"""
 
         if not self.OXFORD_ID or not self.OXFORD_KEY:
             await ctx.send('Please provide valid api keys')
